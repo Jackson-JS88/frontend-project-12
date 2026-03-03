@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 
+
 const MainPage = () => {
   const navigate = useNavigate()
   

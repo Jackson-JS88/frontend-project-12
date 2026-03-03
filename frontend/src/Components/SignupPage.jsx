@@ -1,6 +1,7 @@
 import { useFormik } from 'formik'
 import Navbar from './Navbar'
 
+
 const SignupPage = () => {
   const formik = useFormik({
     initialValues: {
