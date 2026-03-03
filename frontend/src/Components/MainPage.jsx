@@ -1,6 +1,13 @@
+import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 
 const MainPage = () => {
+  const navigate = useNavigate()
+  
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    navigate('/login')
+  }
   
   return (
     <div className="d-flex flex-column h-100">
@@ -9,11 +16,11 @@ const MainPage = () => {
         <div className="row justify-content-center align-content-center h-100">
           <div className="col-12 text-center">
             <h1 className="mb-4">Hexlet Chat</h1>
-            <a href="/login" className="btn btn-primary">Войти</a>
-            <div className="mt-3">
-              <span className="text-muted">Нет аккаунта? </span>
-              <a href="/signup" className="text-decoration-none">Регистрация</a>
-            </div>
+            <p className="lead mb-4">Добро пожаловать в чат!</p>
+            <p className="mb-4">Здесь скоро появится чат.</p>
+            <button onClick={handleLogout} className="btn btn-outline-danger">
+              Выйти
+            </button>
           </div>
         </div>
       </div>
