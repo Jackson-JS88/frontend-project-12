@@ -7,7 +7,6 @@ import { login } from '../services/api'
 
 const LoginPage = () => {
   const navigate = useNavigate()
-  
 
   const formik = useFormik({
     initialValues: {
@@ -16,18 +15,13 @@ const LoginPage = () => {
     },
     onSubmit: async (values) => {
       try {
-        console.log('Попытка входа:', values.username)
-
         const response = await login(values.username, values.password)
-        console.log('Ответ от сервера:', response)
         
         if (response.token) {
           localStorage.setItem('token', response.token)
-          console.log('Токен сохранен')
           navigate('/chat')
         }
-      } catch (error) {
-        console.error('Ошибка входа:', error)
+      } catch {
         alert('Неверные имя пользователя или пароль')
       }
     },
@@ -41,13 +35,10 @@ const LoginPage = () => {
           <div className="col-12 col-md-8 col-xxl-6">
             <div className="card shadow-sm">
               <div className="card-body row p-5">
-                <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-
-                </div>
+                <div className="col-12 col-md-6 d-flex align-items-center justify-content-center" />
                 <form className="col-12 col-md-6 mt-3 mt-md-0" onSubmit={formik.handleSubmit}>
                   <h1 className="text-center mb-4">Войти</h1>
                   
-
                   <div className="form-floating mb-3">
                     <input
                       id="username"
@@ -58,7 +49,6 @@ const LoginPage = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
-
                       required
                     />
                     <label htmlFor="username">Ваш ник</label>
@@ -74,7 +64,6 @@ const LoginPage = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
-
                       required
                     />
                     <label htmlFor="password">Пароль</label>

@@ -16,7 +16,7 @@ const MainPage = () => {
       <div className="container-fluid h-100">
         <div className="row justify-content-center align-content-center h-100">
           <div className="col-12 text-center">
-            <h1 className="mb-4">Hexlet Chat</h1>
+            <h1 className="mb-4">Chat</h1>
             <p className="lead mb-4">Добро пожаловать в чат!</p>
             <p className="mb-4">Здесь скоро появится чат.</p>
             <button onClick={handleLogout} className="btn btn-outline-danger">

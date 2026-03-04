@@ -7,15 +7,9 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
-  console.log('Токен из localStorage:', token)
-  
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
-    console.log('Заголовок Authorization установлен')
-  } else {
-    console.log('Токен не найден')
   }
-  
   return config
 })
 
