@@ -1,5 +1,6 @@
 import { io } from 'socket.io-client'
 
+
 class SocketService {
   constructor() {
     this.socket = null
@@ -30,7 +31,7 @@ class SocketService {
     })
 
     this.socket.on('disconnect', () => {
-    this.connected = false
+      this.connected = false
     })
 
     return this.socket

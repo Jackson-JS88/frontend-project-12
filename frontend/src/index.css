@@ -7,3 +7,31 @@ html, body, #root {
 body {
   background-color: #f8f9fa;
 }
+
+.channel-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+.channel-menu-button {
+  color: #6c757d;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.channel-menu-button:hover {
+  color: #495057;
+}
+
+.list-group-item.active .channel-menu-button {
+  color: white;
+}
+
+.list-group-item.active .channel-menu-button:hover {
+  color: rgba(255, 255, 255, 0.8);
+}

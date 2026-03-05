@@ -16,12 +16,35 @@ const messagesSlice = createSlice({
       state.messages = action.payload
     },
     addMessage: (state, action) => {
-      state.messages.push(action.payload)
+      const newMessage = action.payload
+      
+      if (newMessage.id) {
+        const tempMessageIndex = state.messages.findIndex(m => 
+          m.tempId && 
+          m.text === newMessage.text && 
+          m.channelId === newMessage.channelId
+        )
+        
+        if (tempMessageIndex !== -1) {
+          const tempId = state.messages[tempMessageIndex]?.tempId
+          state.messages.splice(tempMessageIndex, 1)
+          if (tempId) {
+            delete state.sendingStatus[tempId]
+          }
+        }
+      }
+      
+      state.messages.push(newMessage)
     },
     updateMessageStatus: (state, action) => {
       const { tempId, status, error } = action.payload
       if (tempId) {
         state.sendingStatus[tempId] = { status, error }
+        
+        const message = state.messages.find(m => m.tempId === tempId)
+        if (message) {
+          message.status = status
+        }
       }
     },
     removeTempMessage: (state, action) => {

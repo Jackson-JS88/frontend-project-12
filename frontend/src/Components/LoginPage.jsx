@@ -19,6 +19,7 @@ const LoginPage = () => {
         
         if (response.token) {
           localStorage.setItem('token', response.token)
+          localStorage.setItem('username', response.username)
           navigate('/chat')
         }
       } catch {
