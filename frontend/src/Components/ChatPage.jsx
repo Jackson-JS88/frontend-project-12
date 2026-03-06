@@ -30,6 +30,13 @@ const ChatPage = () => {
 
   useSocket()
 
+  const getMessagesCount = (count) => {
+    const words = ['сообщение', 'сообщения', 'сообщений']
+    const cases = [2, 0, 1, 1, 1, 2]
+    const index = (count % 100 > 4 && count % 100 < 20) ? 2 : cases[(count % 10 < 5) ? count % 10 : 5]
+    return `${count} ${words[index]}`
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -85,7 +92,7 @@ const ChatPage = () => {
     dispatch(updateMessageStatus({ tempId, status: 'sending' }))
 
     try {
-      await sendMessageHttp(currentChannelId, messageText)
+      await sendMessageHttp(currentChannelId, messageText, currentUsername)
       dispatch(updateMessageStatus({ tempId, status: 'sent' }))
     } catch {
       dispatch(updateMessageStatus({ tempId, status: 'error', error: 'Не удалось отправить' }))
@@ -238,6 +245,9 @@ const ChatPage = () => {
                   <h5 className="mb-0">
                     <span className="text-muted me-1">#</span>
                     {currentChannel.name}
+                    <span className="text-muted ms-3 small">
+                      {getMessagesCount(channelMessages.length)}
+                    </span>
                   </h5>
                 </div>
 

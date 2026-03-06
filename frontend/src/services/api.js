@@ -23,6 +23,18 @@ export const signup = async (username, password) => {
   return response.data
 }
 
+export const getChannels = () => api.get('/channels')
+export const getMessages = () => api.get('/messages')
+
+export const sendMessageHttp = async (channelId, text, username) => {
+  const response = await api.post('/messages', {
+    channelId: String(channelId),
+    text,
+    username,
+  })
+  return response.data
+}
+
 export const createChannel = async (name) => {
   const response = await api.post('/channels', { name })
   return response.data
@@ -37,15 +49,6 @@ export const removeChannel = async (id) => {
   const response = await api.delete(`/channels/${id}`)
   return response.data
 }
-export const getChannels = () => api.get('/channels')
-export const getMessages = () => api.get('/messages')
 
-export const sendMessageHttp = async (channelId, text) => {
-  const response = await api.post('/messages', {
-    channelId: String(channelId),
-    text,
-  })
-  return response.data
-}
 
 export default api
