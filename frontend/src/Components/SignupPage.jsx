@@ -1,5 +1,6 @@
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
+import * as yup from 'yup'
 import Navbar from './Navbar'
 import { signup } from '../services/api'
 
@@ -7,18 +8,31 @@ import { signup } from '../services/api'
 const SignupPage = () => {
   const navigate = useNavigate()
 
+  const validationSchema = yup.object({
+    username: yup
+      .string()
+      .min(3, 'От 3 до 20 символов')
+      .max(20, 'От 3 до 20 символов')
+      .required('Обязательное поле'),
+    password: yup
+      .string()
+      .min(6, 'Не менее 6 символов')
+      .required('Обязательное поле'),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password'), null], 'Пароли должны совпадать')
+      .required('Обязательное поле'),
+  })
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
       confirmPassword: '',
     },
-    onSubmit: async (values) => {
+    validationSchema,
+    onSubmit: async (values, { setSubmitting, setFieldError }) => {
       try {
-        if (values.password !== values.confirmPassword) {
-          alert('Пароли не совпадают')
-          return
-        }
 
         const response = await signup(values.username, values.password)
         
@@ -29,10 +43,12 @@ const SignupPage = () => {
         }
       } catch (error) {
         if (error.response?.status === 409) {
-          alert('Пользователь с таким именем уже существует')
+          setFieldError('username', 'Такой пользователь уже существует')
         } else {
-          alert('Ошибка при регистрации')
+          alert('Ошибка при регистрации. Попробуйте позже.')
         }
+      } finally {
+        setSubmitting(false)
       }
     },
   })
@@ -49,57 +65,63 @@ const SignupPage = () => {
                 <form className="col-12 col-md-6 mt-3 mt-md-0" onSubmit={formik.handleSubmit}>
                   <h1 className="text-center mb-4">Регистрация</h1>
                   
-                  <div className="form-floating mb-3">
+                  <div className="mb-3">
                     <input
                       id="username"
                       name="username"
                       type="text"
-                      className="form-control"
+                      className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
                       placeholder="Имя пользователя"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
-                      required
+                      disabled={formik.isSubmitting}
                     />
-                    <label htmlFor="username">Имя пользователя</label>
+                    {formik.touched.username && formik.errors.username && (
+                      <div className="invalid-feedback">{formik.errors.username}</div>
+                    )}
                   </div>
 
-                  <div className="form-floating mb-3">
+                  <div className="mb-3">
                     <input
                       id="password"
                       name="password"
                       type="password"
-                      className="form-control"
+                      className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
                       placeholder="Пароль"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
-                      required
-                      minLength="6"
+                      disabled={formik.isSubmitting}
                     />
-                    <label htmlFor="password">Пароль</label>
+                    {formik.touched.password && formik.errors.password && (
+                      <div className="invalid-feedback">{formik.errors.password}</div>
+                    )}
                   </div>
 
-                  <div className="form-floating mb-4">
+                  <div className="mb-4">
                     <input
                       id="confirmPassword"
                       name="confirmPassword"
                       type="password"
-                      className="form-control"
+                      className={`form-control ${formik.touched.confirmPassword && formik.errors.confirmPassword ? 'is-invalid' : ''}`}
                       placeholder="Подтвердите пароль"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.confirmPassword}
-                      required
+                      disabled={formik.isSubmitting}
                     />
-                    <label htmlFor="confirmPassword">Подтвердите пароль</label>
+                    {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+                      <div className="invalid-feedback">{formik.errors.confirmPassword}</div>
+                    )}
                   </div>
 
                   <button
                     type="submit"
                     className="w-100 mb-3 btn btn-primary"
+                    disabled={formik.isSubmitting}
                   >
-                    Зарегистрироваться
+                    {formik.isSubmitting ? 'Регистрация...' : 'Зарегистрироваться'}
                   </button>
                 </form>
               </div>

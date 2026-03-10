@@ -11,7 +11,8 @@ const Navbar = () => {
     navigate('/login')
   }
 
-  const showLogoutButton = location.pathname === '/chat'
+  const isAuthenticated = !!localStorage.getItem('token')
+  const showLogoutButton = isAuthenticated && location.pathname === '/chat'
 
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
