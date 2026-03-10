@@ -1,11 +1,12 @@
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
-
+import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
 import { login } from '../services/api'
 
 
 const LoginPage = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const formik = useFormik({
@@ -23,7 +24,7 @@ const LoginPage = () => {
           navigate('/chat')
         }
       } catch {
-        alert('Неверные имя пользователя или пароль')
+        alert(t('login.errors.invalid'))
       }
     },
   })
@@ -38,7 +39,7 @@ const LoginPage = () => {
               <div className="card-body row p-5">
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center" />
                 <form className="col-12 col-md-6 mt-3 mt-md-0" onSubmit={formik.handleSubmit}>
-                  <h1 className="text-center mb-4">Войти</h1>
+                  <h1 className="text-center mb-4">{t('login.title')}</h1>
                   
                   <div className="form-floating mb-3">
                     <input
@@ -46,13 +47,13 @@ const LoginPage = () => {
                       name="username"
                       type="text"
                       className="form-control"
-                      placeholder="Ваш ник"
+                      placeholder={t('login.username')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
                       required
                     />
-                    <label htmlFor="username">Ваш ник</label>
+                    <label htmlFor="username">{t('login.username')}</label>
                   </div>
 
                   <div className="form-floating mb-4">
@@ -61,27 +62,27 @@ const LoginPage = () => {
                       name="password"
                       type="password"
                       className="form-control"
-                      placeholder="Пароль"
+                      placeholder={t('login.password')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                       required
                     />
-                    <label htmlFor="password">Пароль</label>
+                    <label htmlFor="password">{t('login.password')}</label>
                   </div>
 
                   <button
                     type="submit"
                     className="w-100 mb-3 btn btn-outline-primary"
                   >
-                    Войти
+                    {t('login.submit')}
                   </button>
                 </form>
               </div>
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>Нет аккаунта? </span>
-                  <a href="/signup">Регистрация</a>
+                  <span>{t('login.noAccount')} </span>
+                  <a href="/signup">{t('login.signup')}</a>
                 </div>
               </div>
             </div>

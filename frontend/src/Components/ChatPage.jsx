@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { getChannels, getMessages, sendMessageHttp } from '../services/api'
 import { 
   setChannels, setCurrentChannel, 
@@ -16,6 +17,7 @@ import RemoveChannelModal from './RemoveChannelModal'
 
 
 const ChatPage = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const messagesEndRef = useRef(null)
   const [newMessageText, setNewMessageText] = useState('')
@@ -31,10 +33,7 @@ const ChatPage = () => {
   useSocket()
 
   const getMessagesCount = (count) => {
-    const words = ['сообщение', 'сообщения', 'сообщений']
-    const cases = [2, 0, 1, 1, 1, 2]
-    const index = (count % 100 > 4 && count % 100 < 20) ? 2 : cases[(count % 10 < 5) ? count % 10 : 5]
-    return `${count} ${words[index]}`
+    return t('messages.count', { count })
   }
 
   useEffect(() => {
@@ -137,10 +136,10 @@ const ChatPage = () => {
     if (message.tempId) {
       const status = sendingStatus[message.tempId]?.status
       if (status === 'sending') {
-        return <span className="ms-2 small text-muted">(отправляется...)</span>
+        return <span className="ms-2 small text-muted">({t('message.sending')})</span>
       }
       if (status === 'error') {
-        return <span className="ms-2 small text-danger">(ошибка)</span>
+        return <span className="ms-2 small text-danger">({t('message.error')})</span>
       }
     }
     return null
@@ -152,7 +151,7 @@ const ChatPage = () => {
         <Navbar />
         <div className="container-fluid h-100 d-flex justify-content-center align-items-center">
           <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Загрузка...</span>
+            <span className="visually-hidden">{t('loading')}</span>
           </div>
         </div>
       </div>
@@ -194,11 +193,11 @@ const ChatPage = () => {
           <div className="col-3 bg-light p-0 border-end" style={{ height: 'calc(100vh - 56px)' }}>
             <div className="p-3">
               <div className="d-flex justify-content-between align-items-center mb-3">
-                <h5 className="mb-0">Каналы</h5>
+                <h5 className="mb-0">{t('channels')}</h5>
                 <button
                   className="btn btn-sm btn-outline-primary"
                   onClick={() => setShowAddModal(true)}
-                  title="Добавить канал"
+                  title={t('channel.add')}
                 >
                   +
                 </button>
@@ -222,6 +221,9 @@ const ChatPage = () => {
                     }}>
                       <span className="text-muted me-1">#</span>
                       {channel.name}
+                      {!channel.removable && (
+                        <span className="badge bg-secondary ms-2">{t('channel.fixed')}</span>
+                      )}
                     </span>
                     
                     <div onClick={(e) => e.stopPropagation()}>
@@ -283,7 +285,8 @@ const ChatPage = () => {
                     })
                   ) : (
                     <div className="text-center text-muted mt-5">
-                      <p>Пока нет сообщений</p>
+                      <p>{t('noMessages')}</p>
+                      <p className="small">{t('beFirst')}</p>
                     </div>
                   )}
                   <div ref={messagesEndRef} />
@@ -294,7 +297,7 @@ const ChatPage = () => {
                     <input
                       type="text"
                       className="form-control me-2"
-                      placeholder="Введите сообщение..."
+                      placeholder={t('message.placeholder')}
                       value={newMessageText}
                       onChange={(e) => setNewMessageText(e.target.value)}
                       disabled={!currentChannelId}
@@ -304,14 +307,14 @@ const ChatPage = () => {
                       className="btn btn-primary"
                       disabled={!newMessageText.trim() || !currentChannelId}
                     >
-                      Отправить
+                      {t('send')}
                     </button>
                   </form>
                 </div>
               </>
             ) : (
               <div className="h-100 d-flex justify-content-center align-items-center">
-                <p className="text-muted">Выберите канал</p>
+                <p className="text-muted">{t('chooseChannel')}</p>
               </div>
             )}
           </div>

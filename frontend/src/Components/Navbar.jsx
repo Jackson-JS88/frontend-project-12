@@ -1,7 +1,9 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 
 const Navbar = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
   
@@ -17,14 +19,14 @@ const Navbar = () => {
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">
-        <a className="navbar-brand" href="/">My Chat</a>
+        <a className="navbar-brand" href="/">{t('appName')}</a>
         {showLogoutButton && (
           <button 
             onClick={handleLogout}
             className="btn btn-primary"
             type="button"
           >
-            Выйти
+            {t('logout')}
           </button>
         )}
       </div>

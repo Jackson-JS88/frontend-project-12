@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 
 const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
+  const { t } = useTranslation()
   const [showMenu, setShowMenu] = useState(false)
 
   const isRemovable = channel.removable !== false
@@ -49,7 +51,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
                 onRename()
               }}
             >
-              Переименовать
+              {t('menu.rename')}
             </button>
             
             {isRemovable && (
@@ -60,7 +62,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
                   onRemove()
                 }}
               >
-                Удалить
+                {t('menu.remove')}
               </button>
             )}
           </div>

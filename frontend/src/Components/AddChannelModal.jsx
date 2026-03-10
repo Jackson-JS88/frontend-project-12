@@ -1,19 +1,21 @@
 import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useTranslation } from 'react-i18next'
 import Modal from './Modal'
 
 
 const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
+  const { t } = useTranslation()
   const inputRef = useRef(null)
 
   const validationSchema = yup.object({
     name: yup
       .string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле')
-      .test('unique', 'Канал с таким именем уже существует', (value) => {
+      .min(3, t('channel.errors.length'))
+      .max(20, t('channel.errors.length'))
+      .required(t('channel.errors.required'))
+      .test('unique', t('channel.errors.unique'), (value) => {
         return !existingChannels.some(
           (channel) => channel.name.toLowerCase() === value?.toLowerCase()
         )
@@ -44,7 +46,7 @@ const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Добавить канал">
+    <Modal isOpen={isOpen} onClose={onClose} title={t('channel.add')}>
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-3">
           <input
@@ -52,7 +54,7 @@ const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
             name="name"
             type="text"
             className={`form-control ${formik.touched.name && formik.errors.name ? 'is-invalid' : ''}`}
-            placeholder="Имя канала"
+            placeholder={t('channel.name')}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             onKeyDown={handleKeyDown}
@@ -71,14 +73,14 @@ const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
             onClick={onClose}
             disabled={formik.isSubmitting}
           >
-            Отмена
+            {t('cancel')}
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={!formik.isValid || formik.isSubmitting}
           >
-            {formik.isSubmitting ? 'Добавление...' : 'Добавить'}
+            {formik.isSubmitting ? t('loading') : t('add')}
           </button>
         </div>
       </form>
