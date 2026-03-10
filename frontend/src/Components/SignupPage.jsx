@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +10,7 @@ import { signup } from '../services/api'
 const SignupPage = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const [userExistsError, setUserExistsError] = useState(false)
 
   const validationSchema = yup.object({
     username: yup
@@ -33,9 +35,9 @@ const SignupPage = () => {
       confirmPassword: '',
     },
     validationSchema,
-    onSubmit: async (values, { setSubmitting, setFieldError }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
-
+        setUserExistsError(false)
         const response = await signup(values.username, values.password)
         
         if (response.token) {
@@ -45,7 +47,7 @@ const SignupPage = () => {
         }
       } catch (error) {
         if (error.response?.status === 409) {
-          setFieldError('username', t('signup.errors.userExists'))
+          setUserExistsError(true)
         } else {
           alert(t('login.errors.invalid'))
         }
@@ -55,6 +57,14 @@ const SignupPage = () => {
     },
   })
 
+  const hasError = (field) => {
+    return (formik.touched[field] && formik.errors[field]) || userExistsError
+  }
+
+  const getFieldClass = (field) => {
+    return `form-control ${hasError(field) ? 'is-invalid' : ''}`
+  }
+
   return (
     <div className="d-flex flex-column h-100">
       <Navbar />
@@ -62,76 +72,82 @@ const SignupPage = () => {
         <div className="row justify-content-center align-content-center h-100">
           <div className="col-12 col-md-8 col-xxl-6">
             <div className="card shadow-sm">
-              <div className="card-body row p-5">
-                <div className="col-12 col-md-6 d-flex align-items-center justify-content-center" />
-                <form className="col-12 col-md-6 mt-3 mt-md-0" onSubmit={formik.handleSubmit}>
+              <div className="card-body p-5">
+                <form onSubmit={formik.handleSubmit}>
                   <h1 className="text-center mb-4">{t('signup.title')}</h1>
                   
-                  <div className="mb-3">
+                  <div className="form-floating mb-3">
                     <input
                       id="username"
                       name="username"
                       type="text"
-                      className={`form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`}
-                      placeholder={t('signup.username')}
+                      className={getFieldClass('username')}
+                      placeholder={t('signup.errors.usernameLength')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
                       disabled={formik.isSubmitting}
                     />
+                    <label htmlFor="username">{t('signup.username')}</label>
                     {formik.touched.username && formik.errors.username && (
-                      <div className="invalid-feedback">{formik.errors.username}</div>
+                      <div className="invalid-tooltip">{formik.errors.username}</div>
                     )}
                   </div>
 
-                  <div className="mb-3">
+                  <div className="form-floating mb-3">
                     <input
                       id="password"
                       name="password"
                       type="password"
-                      className={`form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`}
-                      placeholder={t('signup.password')}
+                      className={getFieldClass('password')}
+                      placeholder={t('signup.errors.passwordLength')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                       disabled={formik.isSubmitting}
                     />
+                    <label htmlFor="password">{t('signup.password')}</label>
                     {formik.touched.password && formik.errors.password && (
-                      <div className="invalid-feedback">{formik.errors.password}</div>
+                      <div className="invalid-tooltip">{formik.errors.password}</div>
                     )}
                   </div>
 
-                  <div className="mb-4">
+                  <div className="form-floating mb-4">
                     <input
                       id="confirmPassword"
                       name="confirmPassword"
                       type="password"
-                      className={`form-control ${formik.touched.confirmPassword && formik.errors.confirmPassword ? 'is-invalid' : ''}`}
-                      placeholder={t('signup.confirmPassword')}
+                      className={getFieldClass('confirmPassword')}
+                      placeholder={t('signup.errors.passwordMatch')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.confirmPassword}
                       disabled={formik.isSubmitting}
                     />
+                    <label htmlFor="confirmPassword">{t('signup.confirmPassword')}</label>
                     {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-                      <div className="invalid-feedback">{formik.errors.confirmPassword}</div>
+                      <div className="invalid-tooltip">{formik.errors.confirmPassword}</div>
+                    )}
+                    {userExistsError && (
+                      <div className="invalid-tooltip">
+                        {t('signup.errors.userExists')}
+                      </div>
                     )}
                   </div>
 
                   <button
                     type="submit"
-                    className="w-100 mb-3 btn btn-primary"
+                    className="w-100 btn btn-outline-primary"
                     disabled={formik.isSubmitting}
                   >
                     {formik.isSubmitting ? t('loading') : t('signup.submit')}
                   </button>
+                  
+                  <div className="text-center mt-3">
+                    <span>{t('signup.haveAccount')} </span>
+                    <a href="/login">{t('signup.login')}</a>
+                  </div>
                 </form>
-              </div>
-              <div className="card-footer p-4">
-                <div className="text-center">
-                  <span>{t('signup.haveAccount')} </span>
-                  <a href="/login">{t('signup.login')}</a>
-                </div>
               </div>
             </div>
           </div>

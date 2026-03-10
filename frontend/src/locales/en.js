@@ -87,5 +87,23 @@ export default {
       message: 'Page not found',
       backToHome: 'Back to home',
     },
+
+    // Уведомления
+    toast: {
+
+    // Ошибки
+      networkError: 'Network error',
+      loadError: 'Failed to load data',
+      
+    // Каналы
+      channelCreated: 'Channel created',
+      channelRenamed: 'Channel renamed',
+      channelRemoved: 'Channel removed',
+      
+    // Ошибки каналов
+      channelCreateError: 'Failed to create channel',
+      channelRenameError: 'Failed to rename channel',
+      channelRemoveError: 'Failed to remove channel',
+    },
   }
 }

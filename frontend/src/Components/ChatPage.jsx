@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import { getChannels, getMessages, sendMessageHttp } from '../services/api'
 import { 
   setChannels, setCurrentChannel, 
@@ -54,8 +55,10 @@ const ChatPage = () => {
           dispatch(setCurrentChannel(String(channelsResponse.data[0].id)))
         }
       } catch (error) {
+        console.error('Ошибка загрузки данных:', error)
         dispatch(setChannelsError(error.message))
         dispatch(setMessagesError(error.message))
+        toast.error(t('toast.loadError'))
       } finally {
         dispatch(setChannelsLoading(false))
         dispatch(setMessagesLoading(false))
@@ -95,23 +98,42 @@ const ChatPage = () => {
       dispatch(updateMessageStatus({ tempId, status: 'sent' }))
     } catch {
       dispatch(updateMessageStatus({ tempId, status: 'error', error: 'Не удалось отправить' }))
+      toast.error(t('toast.networkError'))
       setTimeout(() => dispatch(removeTempMessage(tempId)), 5000)
     }
   }
 
   const handleAddChannel = async (name) => {
-    await dispatch(createChannelAsync(name)).unwrap()
+    try {
+      await dispatch(createChannelAsync(name)).unwrap()
+      toast.success(t('toast.channelCreated'))
+    } catch (error) {
+      console.error('Ошибка создания канала:', error)
+      toast.error(t('toast.channelCreateError'))
+    }
   }
 
   const handleRenameChannel = async (name) => {
     if (selectedChannel) {
-      await dispatch(renameChannelAsync({ id: selectedChannel.id, name })).unwrap()
+      try {
+        await dispatch(renameChannelAsync({ id: selectedChannel.id, name })).unwrap()
+        toast.success(t('toast.channelRenamed'))
+      } catch (error) {
+        console.error('Ошибка переименования канала:', error)
+        toast.error(t('toast.channelRenameError'))
+      }
     }
   }
 
   const handleRemoveChannel = async () => {
     if (selectedChannel) {
-      await dispatch(removeChannelAsync(selectedChannel.id)).unwrap()
+      try {
+        await dispatch(removeChannelAsync(selectedChannel.id)).unwrap()
+        toast.success(t('toast.channelRemoved'))
+      } catch (error) {
+        console.error('Ошибка удаления канала:', error)
+        toast.error(t('toast.channelRemoveError'))
+      }
     }
   }
 

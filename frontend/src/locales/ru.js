@@ -88,5 +88,23 @@ export default {
       message: 'Страница не найдена',
       backToHome: 'Вернуться на главную',
     },
+
+    // Уведомления
+    toast: {
+      
+    // Ошибки
+      networkError: 'Ошибка сети',
+      loadError: 'Ошибка загрузки данных',
+      
+    // Каналы
+      channelCreated: 'Канал создан',
+      channelRenamed: 'Канал переименован',
+      channelRemoved: 'Канал удалён',
+      
+    // Ошибки каналов
+      channelCreateError: 'Не удалось создать канал',
+      channelRenameError: 'Не удалось переименовать канал',
+      channelRemoveError: 'Не удалось удалить канал',
+    },
   }
 }
