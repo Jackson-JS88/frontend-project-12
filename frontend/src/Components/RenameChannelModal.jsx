@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useTranslation } from 'react-i18next'
+import { cleanText } from '../utils/profanityFilter'
 import Modal from './Modal'
 
 
@@ -16,8 +17,9 @@ const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChanne
       .max(20, t('channel.errors.length'))
       .required(t('channel.errors.required'))
       .test('unique', t('channel.errors.unique'), (value) => {
+        const cleanedValue = cleanText(value)
         return !existingChannels.some(
-          (ch) => ch.id !== channel?.id && ch.name.toLowerCase() === value?.toLowerCase()
+          (ch) => ch.id !== channel?.id && ch.name.toLowerCase() === cleanedValue?.toLowerCase()
         )
       }),
   })
@@ -26,7 +28,8 @@ const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChanne
     initialValues: { name: channel?.name || '' },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      await onRename(values.name)
+      const cleanedName = cleanText(values.name)
+      await onRename(cleanedName)
       setSubmitting(false)
       onClose()
     },

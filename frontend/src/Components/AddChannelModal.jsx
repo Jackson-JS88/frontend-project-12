@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useTranslation } from 'react-i18next'
+import { cleanText } from '../utils/profanityFilter'
 import Modal from './Modal'
 
 
@@ -16,8 +17,9 @@ const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
       .max(20, t('channel.errors.length'))
       .required(t('channel.errors.required'))
       .test('unique', t('channel.errors.unique'), (value) => {
+        const cleanedValue = cleanText(value)
         return !existingChannels.some(
-          (channel) => channel.name.toLowerCase() === value?.toLowerCase()
+          (channel) => channel.name.toLowerCase() === cleanedValue?.toLowerCase()
         )
       }),
   })
@@ -26,7 +28,8 @@ const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
     initialValues: { name: '' },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      await onAdd(values.name)
+      const cleanedName = cleanText(values.name)
+      await onAdd(cleanedName)
       setSubmitting(false)
       onClose()
     },
