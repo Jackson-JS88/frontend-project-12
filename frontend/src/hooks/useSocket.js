@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import socketService from '../sockets'
 import { addMessage } from '../store/messagesSlice'
+import { cleanText } from '../utils/profanityFilter'
 
 
 export const useSocket = () => {
@@ -11,7 +12,11 @@ export const useSocket = () => {
     socketService.connect()
 
     const handleNewMessage = (message) => {
-      dispatch(addMessage(message))
+      const filteredMessage = {
+        ...message,
+        text: cleanText(message.text)
+      }
+      dispatch(addMessage(filteredMessage))
     }
 
     socketService.on('newMessage', handleNewMessage)

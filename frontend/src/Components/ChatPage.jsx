@@ -10,6 +10,7 @@ import {
 } from '../store/channelsSlice'
 import { setMessages, addMessage, updateMessageStatus, removeTempMessage, setLoading as setMessagesLoading, setError as setMessagesError } from '../store/messagesSlice'
 import { useSocket } from '../hooks/useSocket'
+import { cleanText } from '../utils/profanityFilter'
 import Navbar from './Navbar'
 import ChannelMenu from './ChannelMenu'
 import AddChannelModal from './AddChannelModal'
@@ -49,7 +50,12 @@ const ChatPage = () => {
         ])
 
         dispatch(setChannels(channelsResponse.data))
-        dispatch(setMessages(messagesResponse.data))
+
+        const filteredMessages = messagesResponse.data.map(msg => ({
+          ...msg,
+          text: cleanText(msg.text)
+        }))
+        dispatch(setMessages(filteredMessages))
         
         if (channelsResponse.data.length > 0) {
           dispatch(setCurrentChannel(String(channelsResponse.data[0].id)))
@@ -77,7 +83,8 @@ const ChatPage = () => {
     if (!newMessageText.trim() || !currentChannelId) return
 
     const tempId = `temp-${Date.now()}`
-    const messageText = newMessageText.trim()
+    const rawText = newMessageText.trim()
+    const messageText = cleanText(rawText)
     setNewMessageText('')
     
     const currentUsername = localStorage.getItem('username') || 'Вы'
