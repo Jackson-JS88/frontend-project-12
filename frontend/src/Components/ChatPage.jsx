@@ -240,13 +240,19 @@ const ChatPage = () => {
               
               <div className="list-group">
                 {channels.map((channel) => (
-                  <button
+                  <div
                     key={channel.id}
-                    type="button"
                     className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${
                       String(channel.id) === String(currentChannelId) ? 'active' : ''
                     }`}
                     onClick={() => dispatch(setCurrentChannel(String(channel.id)))}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        dispatch(setCurrentChannel(String(channel.id)))
+                      }
+                    }}
                   >
                     <span style={{ 
                       overflow: 'hidden',
@@ -266,7 +272,7 @@ const ChatPage = () => {
                         isActive={String(channel.id) === String(currentChannelId)}
                       />
                     </div>
-                  </button>
+                  </div>
                 ))}
               </div>
             </div>

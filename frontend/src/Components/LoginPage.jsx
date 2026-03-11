@@ -38,9 +38,8 @@ const LoginPage = () => {
         <div className="row justify-content-center align-content-center h-100">
           <div className="col-12 col-md-8 col-xxl-6">
             <div className="card shadow-sm">
-              <div className="card-body row p-5">
-                {/* Пропускаем колонку с аватаром, оставляем только форму */}
-                <form className="col-12 mt-3 mt-md-0" onSubmit={formik.handleSubmit}>
+              <div className="card-body p-5">
+                <form onSubmit={formik.handleSubmit}>
                   <h1 className="text-center mb-4">{t('login.title')}</h1>
                   
                   <div className="form-floating mb-3">
