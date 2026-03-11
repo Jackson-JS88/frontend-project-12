@@ -36,10 +36,11 @@ const LoginPage = () => {
       <Navbar />
       <div className="container-fluid h-100">
         <div className="row justify-content-center align-content-center h-100">
-          <div className="col-12 col-md-6 col-lg-4">
+          <div className="col-12 col-md-8 col-xxl-6">
             <div className="card shadow-sm">
-              <div className="card-body p-5">
-                <form onSubmit={formik.handleSubmit}>
+              <div className="card-body row p-5">
+                {/* Пропускаем колонку с аватаром, оставляем только форму */}
+                <form className="col-12 mt-3 mt-md-0" onSubmit={formik.handleSubmit}>
                   <h1 className="text-center mb-4">{t('login.title')}</h1>
                   
                   <div className="form-floating mb-3">
@@ -52,6 +53,7 @@ const LoginPage = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
+                      autoComplete="username"
                       required
                     />
                     <label htmlFor="username">{t('login.username')}</label>
@@ -67,11 +69,12 @@ const LoginPage = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
+                      autoComplete="current-password"
                       required
                     />
                     <label htmlFor="password">{t('login.password')}</label>
                     {authError && (
-                      <div className="invalid-tooltip">
+                      <div className="invalid-feedback">
                         {t('login.errors.invalid')}
                       </div>
                     )}
@@ -83,12 +86,14 @@ const LoginPage = () => {
                   >
                     {t('login.submit')}
                   </button>
-                  
-                  <div className="text-center">
-                    <span>{t('login.noAccount')} </span>
-                    <a href="/signup">{t('login.signup')}</a>
-                  </div>
                 </form>
+              </div>
+              
+              <div className="card-footer p-4">
+                <div className="text-center">
+                  <span>{t('login.noAccount')} </span>
+                  <a href="/signup">{t('login.signup')}</a>
+                </div>
               </div>
             </div>
           </div>
