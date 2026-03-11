@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -7,9 +7,18 @@ import { login } from '../services/api'
 
 
 const LoginPage = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const [authError, setAuthError] = useState(false)
+  const [isI18nReady, setIsI18nReady] = useState(i18n.isInitialized)
+
+  useEffect(() => {
+    if (!isI18nReady) {
+      i18n.on('initialized', () => {
+        setIsI18nReady(true)
+      })
+    }
+  }, [i18n, isI18nReady])
 
   const formik = useFormik({
     initialValues: {
@@ -31,6 +40,19 @@ const LoginPage = () => {
     },
   })
 
+  if (!isI18nReady) {
+    return (
+      <div className="d-flex flex-column h-100">
+        <Navbar />
+        <div className="container-fluid h-100 d-flex justify-content-center align-items-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">{t('loading')}</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="d-flex flex-column h-100">
       <Navbar />
@@ -48,14 +70,14 @@ const LoginPage = () => {
                       name="username"
                       type="text"
                       className={`form-control ${authError ? 'is-invalid' : ''}`}
-                      placeholder="Ваш ник"
+                      placeholder={t('login.username')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
                       autoComplete="username"
                       required
                     />
-                    <label htmlFor="username">Ваш ник</label>
+                    <label htmlFor="username">{t('login.username')}</label>
                   </div>
 
                   <div className="form-floating mb-4">
@@ -64,14 +86,14 @@ const LoginPage = () => {
                       name="password"
                       type="password"
                       className={`form-control ${authError ? 'is-invalid' : ''}`}
-                      placeholder="Пароль"
+                      placeholder={t('login.password')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                       autoComplete="current-password"
                       required
                     />
-                    <label htmlFor="password">Пароль</label>
+                    <label htmlFor="password">{t('login.password')}</label>
                     {authError && (
                       <div className="invalid-feedback">
                         {t('login.errors.invalid')}
