@@ -14,7 +14,12 @@ class SocketService {
 
     const token = localStorage.getItem('token')
     
-    this.socket = io('http://localhost:5001', {
+    const isProduction = import.meta.env.PROD
+    const url = isProduction 
+      ? window.location.origin
+      : 'http://localhost:5001'
+
+    this.socket = io(url, {
       auth: { token },
       transports: ['websocket', 'polling'],
       reconnection: true,
@@ -26,8 +31,8 @@ class SocketService {
       this.connected = true
     })
 
-    this.socket.on('connect_error', (error) => {
-      console.error('Socket connection error:', error.message)
+    this.socket.on('connect_error', () => {
+      // silent error
     })
 
     this.socket.on('disconnect', () => {
