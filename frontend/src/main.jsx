@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import App from './App'
 import store from './store'
-import I18nProvider from './Сomponents/I18nProvider'
+import I18nProvider from './Components/I18nProvider'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
