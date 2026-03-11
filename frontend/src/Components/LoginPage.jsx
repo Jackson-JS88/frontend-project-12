@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
 import { login } from '../services/api'
 
 
 const LoginPage = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [authError, setAuthError] = useState(false)
 
@@ -31,13 +33,6 @@ const LoginPage = () => {
 
   return (
     <div className="d-flex flex-column h-100">
-      {/* ТЕКСТ ДЛЯ ТЕСТА НА РУССКОМ И АНГЛИЙСКОМ */}
-      <div style={{backgroundColor: 'red', color: 'white', padding: '20px', textAlign: 'center'}}>
-        <div>===== ТЕСТОВАЯ СТРАНИЦА =====</div>
-        <div>Ваш ник (Russian)</div>
-        <div>Your nickname (English)</div>
-      </div>
-      
       <Navbar />
       <div className="container-fluid h-100">
         <div className="row justify-content-center align-content-center h-100">
@@ -45,7 +40,7 @@ const LoginPage = () => {
             <div className="card shadow-sm">
               <div className="card-body p-5">
                 <form onSubmit={formik.handleSubmit}>
-                  <h1 className="text-center mb-4">Войти / Login</h1>
+                  <h1 className="text-center mb-4">{t('login.title')}</h1>
                   
                   <div className="form-floating mb-3">
                     <input
@@ -53,14 +48,14 @@ const LoginPage = () => {
                       name="username"
                       type="text"
                       className={`form-control ${authError ? 'is-invalid' : ''}`}
-                      placeholder="Ваш ник / Your nickname"
+                      placeholder={t('login.username')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
                       autoComplete="username"
                       required
                     />
-                    <label htmlFor="username">Ваш ник / Your nickname</label>
+                    <label htmlFor="username">{t('login.username')}</label>
                   </div>
 
                   <div className="form-floating mb-4">
@@ -69,17 +64,17 @@ const LoginPage = () => {
                       name="password"
                       type="password"
                       className={`form-control ${authError ? 'is-invalid' : ''}`}
-                      placeholder="Пароль / Password"
+                      placeholder={t('login.password')}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                       autoComplete="current-password"
                       required
                     />
-                    <label htmlFor="password">Пароль / Password</label>
+                    <label htmlFor="password">{t('login.password')}</label>
                     {authError && (
                       <div className="invalid-feedback">
-                        Неверные имя пользователя или пароль / Invalid username or password
+                        {t('login.errors.invalid')}
                       </div>
                     )}
                   </div>
@@ -88,15 +83,15 @@ const LoginPage = () => {
                     type="submit"
                     className="w-100 mb-3 btn btn-outline-primary"
                   >
-                    Войти / Login
+                    {t('login.submit')}
                   </button>
                 </form>
               </div>
               
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>Нет аккаунта? / No account? </span>
-                  <a href="/signup">Регистрация / Sign up</a>
+                  <span>{t('login.noAccount')} </span>
+                  <a href="/signup">{t('login.signup')}</a>
                 </div>
               </div>
             </div>
