@@ -48,14 +48,14 @@ const LoginPage = () => {
                       name="username"
                       type="text"
                       className={`form-control ${authError ? 'is-invalid' : ''}`}
-                      placeholder={t('login.username')}
+                      placeholder="Ваш ник"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
                       autoComplete="username"
                       required
                     />
-                    <label htmlFor="username">{t('login.username')}</label>
+                    <label htmlFor="username">Ваш ник</label>
                   </div>
 
                   <div className="form-floating mb-4">
@@ -64,14 +64,14 @@ const LoginPage = () => {
                       name="password"
                       type="password"
                       className={`form-control ${authError ? 'is-invalid' : ''}`}
-                      placeholder={t('login.password')}
+                      placeholder="Пароль"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                       autoComplete="current-password"
                       required
                     />
-                    <label htmlFor="password">{t('login.password')}</label>
+                    <label htmlFor="password">Пароль</label>
                     {authError && (
                       <div className="invalid-feedback">
                         {t('login.errors.invalid')}
