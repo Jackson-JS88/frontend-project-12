@@ -23,3 +23,6 @@ export const createI18n = () => {
   
   return instance
 }
+
+const defaultInstance = createI18n()
+export default defaultInstance
