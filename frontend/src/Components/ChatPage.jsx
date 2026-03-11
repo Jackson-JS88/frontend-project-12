@@ -1,4 +1,3 @@
-import { cleanText, hasProfanity } from '../utils/profanityFilter'
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -74,42 +73,35 @@ const ChatPage = () => {
   }, [messages, currentChannelId])
 
   const handleSendMessage = async (e) => {
-  e.preventDefault()
-  if (!newMessageText.trim() || !currentChannelId) return
+    e.preventDefault()
+    if (!newMessageText.trim() || !currentChannelId) return
 
-  const tempId = `temp-${Date.now()}`
-  const rawText = newMessageText.trim()
-  
-  const messageText = cleanText(rawText)
-  
-  if (hasProfanity(rawText)) {
-    console.log('Обнаружены нецензурные слова, текст очищен')
-  }
-  
-  setNewMessageText('')
-  
-  const currentUsername = localStorage.getItem('username') || 'Вы'
-  
-  const tempMessage = {
-    tempId,
-    text: messageText,
-    username: currentUsername,
-    channelId: currentChannelId,
-    sending: true,
-  }
-  
-  dispatch(addMessage(tempMessage))
-  dispatch(updateMessageStatus({ tempId, status: 'sending' }))
+    const tempId = `temp-${Date.now()}`
+    const messageText = newMessageText.trim()
+    setNewMessageText('')
+    
+    const currentUsername = localStorage.getItem('username') || 'Вы'
+    
+    const tempMessage = {
+      tempId,
+      text: messageText,
+      username: currentUsername,
+      channelId: currentChannelId,
+      sending: true,
+    }
+    
+    dispatch(addMessage(tempMessage))
+    dispatch(updateMessageStatus({ tempId, status: 'sending' }))
 
-  try {
-    await sendMessageHttp(currentChannelId, messageText, currentUsername)
-    dispatch(updateMessageStatus({ tempId, status: 'sent' }))
-  } catch {
-    dispatch(updateMessageStatus({ tempId, status: 'error', error: 'Не удалось отправить' }))
-    toast.error(t('toast.networkError'))
-    setTimeout(() => dispatch(removeTempMessage(tempId)), 5000)
+    try {
+      await sendMessageHttp(currentChannelId, messageText, currentUsername)
+      dispatch(updateMessageStatus({ tempId, status: 'sent' }))
+    } catch {
+      dispatch(updateMessageStatus({ tempId, status: 'error', error: 'Не удалось отправить' }))
+      toast.error(t('toast.networkError'))
+      setTimeout(() => dispatch(removeTempMessage(tempId)), 5000)
+    }
   }
-}
 
   const handleAddChannel = async (name) => {
     try {
