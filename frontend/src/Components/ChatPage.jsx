@@ -78,6 +78,12 @@ const ChatPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, currentChannelId])
 
+  useEffect(() => {
+    if (channels.length > 0 && !currentChannelId) {
+      dispatch(setCurrentChannel(String(channels[0].id)))
+    }
+  }, [channels, currentChannelId, dispatch])
+
   const handleSendMessage = async (e) => {
     e.preventDefault()
     if (!newMessageText.trim() || !currentChannelId) return
@@ -234,13 +240,13 @@ const ChatPage = () => {
               
               <div className="list-group">
                 {channels.map((channel) => (
-                  <div
+                  <button
                     key={channel.id}
+                    type="button"
                     className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${
                       String(channel.id) === String(currentChannelId) ? 'active' : ''
                     }`}
                     onClick={() => dispatch(setCurrentChannel(String(channel.id)))}
-                    style={{ cursor: 'pointer' }}
                   >
                     <span style={{ 
                       overflow: 'hidden',
@@ -250,9 +256,6 @@ const ChatPage = () => {
                     }}>
                       <span className="text-muted me-1">#</span>
                       {channel.name}
-                      {!channel.removable && (
-                        <span className="badge bg-secondary ms-2">{t('channel.fixed')}</span>
-                      )}
                     </span>
                     
                     <div onClick={(e) => e.stopPropagation()}>
@@ -263,7 +266,7 @@ const ChatPage = () => {
                         isActive={String(channel.id) === String(currentChannelId)}
                       />
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
