@@ -17,6 +17,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
           e.stopPropagation()
           setShowMenu(!showMenu)
         }}
+        aria-label="Управление каналом"
         style={{ 
           background: 'transparent',
           color: isActive ? 'white' : '#6c757d',

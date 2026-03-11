@@ -1,7 +1,7 @@
 export default {
   translation: {
     // Общие
-    appName: 'My Chat',
+    appName: 'Hexlet Chat',
     loading: 'Загрузка...',
     send: 'Отправить',
     cancel: 'Отмена',
