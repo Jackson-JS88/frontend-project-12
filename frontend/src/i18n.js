@@ -4,25 +4,18 @@ import ru from './locales/ru'
 import en from './locales/en'
 
 
-export const createI18n = () => {
-  const instance = i18n.createInstance()
-  
-  instance
-    .use(initReactI18next)
-    .init({
-      resources: {
-        ru,
-        en,
-      },
-      lng: 'ru',
-      fallbackLng: 'ru',
-      interpolation: {
-        escapeValue: false,
-      },
-    })
-  
-  return instance
-}
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      ru,
+      en,
+    },
+    lng: 'ru',
+    fallbackLng: 'ru',
+    interpolation: {
+      escapeValue: false,
+    },
+  })
 
-const defaultInstance = createI18n()
-export default defaultInstance
+export default i18n

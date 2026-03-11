@@ -1,12 +1,13 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Provider, ErrorBoundary } from '@rollbar/react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import MainPage from './Components/MainPage'
+
 import LoginPage from './Components/LoginPage'
 import SignupPage from './Components/SignupPage'
 import ChatPage from './Components/ChatPage'
 import NotFoundPage from './Components/NotFoundPage'
+import PrivateRoute from './Components/PrivateRoute'
 
 
 const rollbarConfig = {
@@ -25,6 +26,7 @@ const FallbackUI = () => (
 )
 
 function App() {
+  const token = localStorage.getItem('token')
 
   return (
     <Provider config={rollbarConfig}>
@@ -32,10 +34,20 @@ function App() {
         <BrowserRouter>
           <ToastContainer />
           <Routes>
-            <Route path="/" element={<MainPage />} />
+            <Route 
+              path="/" 
+              element={token ? <Navigate to="/chat" /> : <Navigate to="/login" />} 
+            />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route path="/chat" element={<ChatPage />} />
+            <Route 
+              path="/chat" 
+              element={
+                <PrivateRoute>
+                  <ChatPage />
+                </PrivateRoute>
+              } 
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
