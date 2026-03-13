@@ -40,6 +40,7 @@ const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
       setTimeout(() => inputRef.current?.focus(), 100)
       formik.resetForm()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
   const handleKeyDown = (e) => {

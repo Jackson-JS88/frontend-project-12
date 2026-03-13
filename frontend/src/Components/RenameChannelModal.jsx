@@ -40,6 +40,7 @@ const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChanne
       formik.setValues({ name: channel.name })
       setTimeout(() => inputRef.current?.focus(), 100)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, channel])
 
   const handleKeyDown = (e) => {
