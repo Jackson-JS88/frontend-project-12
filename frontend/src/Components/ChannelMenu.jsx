@@ -11,7 +11,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
   return (
     <div className="dropdown" style={{ position: 'relative' }}>
       <button
-        className="btn btn-sm p-0 border-0"
+        className="btn btn-sm p-0 border-0 d-inline-flex align-items-center"
         type="button"
         onClick={(e) => {
           e.stopPropagation()
@@ -19,7 +19,6 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
         }}
         aria-label="Управление каналом"
         style={{ 
-          background: 'transparent',
           color: isActive ? 'white' : '#6c757d',
           fontSize: '1.5rem',
           lineHeight: 1,
@@ -28,7 +27,8 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
           zIndex: 10
         }}
       >
-        ⋮
+        <span className="visually-hidden">Управление каналом</span>
+        <span aria-hidden="true">⋮</span>
       </button>
       
       {showMenu && (
