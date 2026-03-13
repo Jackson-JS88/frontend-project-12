@@ -72,7 +72,7 @@ const ChatPage = () => {
     }
 
     fetchData()
-  }, [dispatch])
+  }, [dispatch, t])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -233,6 +233,7 @@ const ChatPage = () => {
                   className="btn btn-sm btn-outline-primary"
                   onClick={() => setShowAddModal(true)}
                   title={t('channel.add')}
+                  aria-label="Добавить канал"
                 >
                   +
                 </button>
@@ -339,6 +340,7 @@ const ChatPage = () => {
                       value={newMessageText}
                       onChange={(e) => setNewMessageText(e.target.value)}
                       disabled={!currentChannelId}
+                      aria-label="Новое сообщение"
                     />
                     <button 
                       type="submit" 
