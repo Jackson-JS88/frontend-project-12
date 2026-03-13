@@ -52,8 +52,12 @@ const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChanne
     <Modal isOpen={isOpen} onClose={onClose} title={t('channel.rename')}>
       <form onSubmit={formik.handleSubmit}>
         <div className="mb-3">
+          <label htmlFor="channel-name" className="form-label">
+            {t('channel.name')}
+          </label>
           <input
             ref={inputRef}
+            id="channel-name"
             name="name"
             type="text"
             className={`form-control ${formik.touched.name && formik.errors.name ? 'is-invalid' : ''}`}
