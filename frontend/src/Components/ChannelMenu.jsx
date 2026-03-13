@@ -48,10 +48,9 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
         type="button"
         id={`dropdown-${channel.id}`}
         aria-expanded={showMenu}
-        aria-haspopup="true"
         className={`flex-grow-0 dropdown-toggle dropdown-toggle-split btn ${
           isActive ? 'btn-primary' : 'btn-secondary'
-        }`}
+        } ${showMenu ? 'show' : ''}`}
         style={{
           borderTopLeftRadius: '0',
           borderBottomLeftRadius: '0',
@@ -61,7 +60,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
         }}
         onClick={handleToggleMenu}
       >
-        <span className="visually-hidden">{t('menu.manage')}</span>
+        <span className="visually-hidden">Управление каналом</span>
       </button>
 
       {showMenu && (
@@ -77,21 +76,33 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
           onClick={(e) => e.stopPropagation()}
         >
           {isRemovable && (
-            <button
+            <a
               className="dropdown-item"
+              role="button"
+              tabIndex="0"
               onClick={handleRemoveClick}
-              type="button"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleRemoveClick(e)
+                }
+              }}
             >
               {t('menu.remove')}
-            </button>
+            </a>
           )}
-          <button
+          <a
             className="dropdown-item"
+            role="button"
+            tabIndex="0"
             onClick={handleRenameClick}
-            type="button"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                handleRenameClick(e)
+              }
+            }}
           >
             {t('menu.rename')}
-          </button>
+          </a>
         </div>
       )}
 
