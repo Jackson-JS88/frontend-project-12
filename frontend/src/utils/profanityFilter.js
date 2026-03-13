@@ -2,15 +2,18 @@ import filter from 'leo-profanity'
 
 
 filter.loadDictionary('ru')
-filter.loadDictionary('en')
+const englishDict = filter.getDictionary('en')
+if (englishDict) {
+  filter.add(englishDict)
+}
 
 export const cleanText = (text) => {
-  if (!text) return text
+  if (!text || typeof text !== 'string') return text
   return filter.clean(text)
 }
 
 export const hasProfanity = (text) => {
-  if (!text) return false
+  if (!text || typeof text !== 'string') return false
   return filter.check(text)
 }
 
