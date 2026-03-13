@@ -49,7 +49,12 @@ const ChatPage = () => {
           getMessages(),
         ])
 
-        dispatch(setChannels(channelsResponse.data))
+        const channelsWithRemovable = channelsResponse.data.map(channel => ({
+          ...channel,
+          removable: channel.id !== 1 && channel.id !== 2 && channel.name !== 'general' && channel.name !== 'random'
+        }))
+
+        dispatch(setChannels(channelsWithRemovable))
 
         const filteredMessages = messagesResponse.data.map(msg => ({
           ...msg,
@@ -57,8 +62,8 @@ const ChatPage = () => {
         }))
         dispatch(setMessages(filteredMessages))
         
-        if (channelsResponse.data.length > 0) {
-          dispatch(setCurrentChannel(String(channelsResponse.data[0].id)))
+        if (channelsWithRemovable.length > 0) {
+          dispatch(setCurrentChannel(String(channelsWithRemovable[0].id)))
         }
       } catch (error) {
         console.error('Ошибка загрузки данных:', error)
@@ -239,42 +244,43 @@ const ChatPage = () => {
                 </button>
               </div>
               
-              <div className="list-group">
-                {channels.map((channel) => (
-                  <div
-                    key={channel.id}
-                    className={`list-group-item list-group-item-action d-flex justify-content-between align-items-center ${
-                      String(channel.id) === String(currentChannelId) ? 'active' : ''
-                    }`}
-                    onClick={() => dispatch(setCurrentChannel(String(channel.id)))}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        dispatch(setCurrentChannel(String(channel.id)))
-                      }
-                    }}
-                  >
-                    <span style={{ 
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      maxWidth: '120px'
-                    }}>
-                      <span className="text-muted me-1">#</span>
-                      {channel.name}
-                    </span>
-                    
-                    <div onClick={(e) => e.stopPropagation()}>
+              <div>
+                {channels.map((channel) => {
+                  const isActive = String(channel.id) === String(currentChannelId)
+                  
+                  return (
+                    <div
+                      key={channel.id}
+                      className="d-flex dropdown btn-group w-100"
+                      style={{ marginBottom: '0.25rem' }}
+                    >
+                      <button
+                        type="button"
+                        className={`w-100 text-start text-truncate btn ${
+                          isActive ? 'btn-primary' : 'btn-secondary'
+                        }`}
+                        style={{
+                          borderTopLeftRadius: '0.375rem',
+                          borderBottomLeftRadius: '0.375rem',
+                          borderTopRightRadius: '0',
+                          borderBottomRightRadius: '0',
+                          marginRight: '0'
+                        }}
+                        onClick={() => dispatch(setCurrentChannel(String(channel.id)))}
+                      >
+                        <span className="me-1">#</span>
+                        {channel.name}
+                      </button>
+                      
                       <ChannelMenu
                         channel={channel}
                         onRename={() => openRenameModal(channel)}
                         onRemove={() => openRemoveModal(channel)}
-                        isActive={String(channel.id) === String(currentChannelId)}
+                        isActive={isActive}
                       />
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </div>

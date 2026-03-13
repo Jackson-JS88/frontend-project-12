@@ -1,86 +1,111 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 
 const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
   const { t } = useTranslation()
   const [showMenu, setShowMenu] = useState(false)
+  const menuRef = useRef(null)
 
   const isRemovable = channel.removable !== false
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleToggleMenu = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setShowMenu(!showMenu)
+  }
+
+  const handleRenameClick = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setShowMenu(false)
+    onRename()
+  }
+
+  const handleRemoveClick = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
+    setShowMenu(false)
+    onRemove()
+  }
+
   return (
-    <div className="dropdown" style={{ position: 'relative' }}>
+    <div ref={menuRef} style={{ display: 'inline-block' }}>
       <button
-        className="btn btn-sm p-0 border-0 d-inline-flex align-items-center"
         type="button"
-        onClick={(e) => {
-          e.stopPropagation()
-          setShowMenu(!showMenu)
+        id={`dropdown-${channel.id}`}
+        aria-expanded={showMenu}
+        aria-haspopup="true"
+        className={`flex-grow-0 dropdown-toggle dropdown-toggle-split btn ${
+          isActive ? 'btn-primary' : 'btn-secondary'
+        }`}
+        style={{
+          borderTopLeftRadius: '0',
+          borderBottomLeftRadius: '0',
+          borderTopRightRadius: '0.375rem',
+          borderBottomRightRadius: '0.375rem',
+          marginLeft: '0'
         }}
-        aria-label="Управление каналом"
-        style={{ 
-          color: isActive ? 'white' : '#6c757d',
-          fontSize: '1.5rem',
-          lineHeight: 1,
-          padding: '0 5px',
-          cursor: 'pointer',
-          zIndex: 10
-        }}
+        onClick={handleToggleMenu}
       >
-        <span className="visually-hidden">Управление каналом</span>
-        <span aria-hidden="true">⋮</span>
+        <span className="visually-hidden">{t('menu.manage')}</span>
       </button>
-      
+
       {showMenu && (
-        <>
-          <div 
-            className="dropdown-menu show" 
-            style={{ 
-              position: 'absolute', 
-              right: 0,
-              left: 'auto',
-              transform: 'translate(0, 25px)',
-              zIndex: 1060,
-              minWidth: '150px'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div
+          className="dropdown-menu show"
+          style={{
+            position: 'absolute',
+            inset: '0px 0px auto auto',
+            transform: 'translate3d(0px, 38px, 0px)',
+            zIndex: 1060,
+            minWidth: '150px',
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {isRemovable && (
             <button
               className="dropdown-item"
-              onClick={() => {
-                setShowMenu(false)
-                onRename()
-              }}
+              onClick={handleRemoveClick}
+              type="button"
             >
-              {t('menu.rename')}
+              {t('menu.remove')}
             </button>
-            
-            {isRemovable && (
-              <button
-                className="dropdown-item text-danger"
-                onClick={() => {
-                  setShowMenu(false)
-                  onRemove()
-                }}
-              >
-                {t('menu.remove')}
-              </button>
-            )}
-          </div>
-          <div
-            className="modal-backdrop show"
-            style={{ 
-              backgroundColor: 'transparent', 
-              zIndex: 1050,
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0
-            }}
-            onClick={() => setShowMenu(false)}
-          />
-        </>
+          )}
+          <button
+            className="dropdown-item"
+            onClick={handleRenameClick}
+            type="button"
+          >
+            {t('menu.rename')}
+          </button>
+        </div>
+      )}
+
+      {showMenu && (
+        <div
+          className="modal-backdrop show"
+          style={{
+            backgroundColor: 'transparent',
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1040,
+          }}
+          onClick={() => setShowMenu(false)}
+        />
       )}
     </div>
   )
