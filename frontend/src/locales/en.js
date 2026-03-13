@@ -10,7 +10,7 @@ export default {
     rename: 'Rename',
     add: 'Add',
     logout: 'Logout',
-    
+
     // Навигация
     channels: 'Channels',
     messages: {
@@ -20,7 +20,7 @@ export default {
     noMessages: 'No messages yet',
     beFirst: 'Be the first to write in this channel!',
     chooseChannel: 'Choose a channel',
-    
+
     // Авторизация
     login: {
       title: 'Login',
@@ -33,7 +33,7 @@ export default {
         invalid: 'Invalid username or password',
       },
     },
-    
+
     // Регистрация
     signup: {
       title: 'Sign up',
@@ -50,7 +50,7 @@ export default {
         userExists: 'User already exists',
       },
     },
-    
+
     // Каналы
     channel: {
       add: 'Add channel',
@@ -67,20 +67,20 @@ export default {
         unique: 'Channel with this name already exists',
       },
     },
-    
+
     // Сообщения
     message: {
       placeholder: 'Enter message...',
       sending: 'sending...',
       error: 'error',
     },
-    
+
     // Меню канала
     menu: {
       rename: 'Rename',
       remove: 'Remove',
     },
-    
+
     // 404
     notFound: {
       title: '404',
@@ -91,19 +91,19 @@ export default {
     // Уведомления
     toast: {
 
-    // Ошибки
+      // Ошибки
       networkError: 'Network error',
       loadError: 'Failed to load data',
-      
-    // Каналы
+
+      // Каналы
       channelCreated: 'Channel created',
       channelRenamed: 'Channel renamed',
       channelRemoved: 'Channel removed',
-      
-    // Ошибки каналов
+
+      // Ошибки каналов
       channelCreateError: 'Failed to create channel',
       channelRenameError: 'Failed to rename channel',
       channelRemoveError: 'Failed to remove channel',
     },
-  }
+  },
 }

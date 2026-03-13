@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { cleanText } from '../utils/profanityFilter'
 import Modal from './Modal'
 
-
 const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
   const { t } = useTranslation()
   const inputRef = useRef(null)
@@ -19,7 +18,7 @@ const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
       .test('unique', t('channel.errors.unique'), (value) => {
         const cleanedValue = cleanText(value)
         return !existingChannels.some(
-          (channel) => channel.name.toLowerCase() === cleanedValue?.toLowerCase()
+          channel => channel.name.toLowerCase() === cleanedValue?.toLowerCase(),
         )
       }),
   })

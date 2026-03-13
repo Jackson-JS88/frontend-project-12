@@ -1,6 +1,5 @@
 import filter from 'leo-profanity'
 
-
 filter.loadDictionary('ru')
 const englishDict = filter.getDictionary('en')
 if (englishDict) {

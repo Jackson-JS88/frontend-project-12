@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-
 const initialState = {
   messages: [],
   loading: false,
@@ -17,14 +16,14 @@ const messagesSlice = createSlice({
     },
     addMessage: (state, action) => {
       const newMessage = action.payload
-      
+
       if (newMessage.id) {
-        const tempMessageIndex = state.messages.findIndex(m => 
-          m.tempId && 
-          m.text === newMessage.text && 
-          m.channelId === newMessage.channelId
+        const tempMessageIndex = state.messages.findIndex(m =>
+          m.tempId
+          && m.text === newMessage.text
+          && m.channelId === newMessage.channelId,
         )
-        
+
         if (tempMessageIndex !== -1) {
           const tempId = state.messages[tempMessageIndex]?.tempId
           state.messages.splice(tempMessageIndex, 1)
@@ -33,14 +32,14 @@ const messagesSlice = createSlice({
           }
         }
       }
-      
+
       state.messages.push(newMessage)
     },
     updateMessageStatus: (state, action) => {
       const { tempId, status, error } = action.payload
       if (tempId) {
         state.sendingStatus[tempId] = { status, error }
-        
+
         const message = state.messages.find(m => m.tempId === tempId)
         if (message) {
           message.status = status
@@ -60,13 +59,13 @@ const messagesSlice = createSlice({
   },
 })
 
-export const { 
-  setMessages, 
-  addMessage, 
-  updateMessageStatus, 
+export const {
+  setMessages,
+  addMessage,
+  updateMessageStatus,
   removeTempMessage,
-  setLoading, 
-  setError 
+  setLoading,
+  setError,
 } = messagesSlice.actions
 
 export default messagesSlice.reducer

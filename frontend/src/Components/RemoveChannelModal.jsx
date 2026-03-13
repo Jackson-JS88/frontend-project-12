@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Modal from './Modal'
 
-
 const RemoveChannelModal = ({ isOpen, onClose, onRemove, channel }) => {
   const { t } = useTranslation()
   const [isRemoving, setIsRemoving] = useState(false)
@@ -12,9 +11,11 @@ const RemoveChannelModal = ({ isOpen, onClose, onRemove, channel }) => {
     try {
       await onRemove()
       onClose()
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error removing channel:', error)
-    } finally {
+    }
+    finally {
       setIsRemoving(false)
     }
   }

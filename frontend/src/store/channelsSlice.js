@@ -1,13 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { createChannel, renameChannel, removeChannel } from '../services/api'
 
-
 export const createChannelAsync = createAsyncThunk(
   'channels/createChannel',
   async (name) => {
     const response = await createChannel(name)
     return response
-  }
+  },
 )
 
 export const renameChannelAsync = createAsyncThunk(
@@ -15,7 +14,7 @@ export const renameChannelAsync = createAsyncThunk(
   async ({ id, name }) => {
     const response = await renameChannel(id, name)
     return response
-  }
+  },
 )
 
 export const removeChannelAsync = createAsyncThunk(
@@ -23,7 +22,7 @@ export const removeChannelAsync = createAsyncThunk(
   async (id) => {
     await removeChannel(id)
     return id
-  }
+  },
 )
 
 const initialState = {

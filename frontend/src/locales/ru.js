@@ -10,7 +10,7 @@ export default {
     rename: 'Переименовать',
     add: 'Добавить',
     logout: 'Выйти',
-    
+
     // Навигация
     channels: 'Каналы',
     messages: {
@@ -21,7 +21,7 @@ export default {
     noMessages: 'Пока нет сообщений',
     beFirst: 'Будьте первым, кто напишет в этом канале!',
     chooseChannel: 'Выберите канал',
-    
+
     // Авторизация
     login: {
       title: 'Войти',
@@ -34,7 +34,7 @@ export default {
         invalid: 'Неверные имя пользователя или пароль',
       },
     },
-    
+
     // Регистрация
     signup: {
       title: 'Регистрация',
@@ -51,7 +51,7 @@ export default {
         userExists: 'Такой пользователь уже существует',
       },
     },
-    
+
     // Каналы
     channel: {
       add: 'Добавить канал',
@@ -68,20 +68,20 @@ export default {
         unique: 'Канал с таким именем уже существует',
       },
     },
-    
+
     // Сообщения
     message: {
       placeholder: 'Введите сообщение...',
       sending: 'отправляется...',
       error: 'ошибка',
     },
-    
+
     // Меню канала
     menu: {
       rename: 'Переименовать',
       remove: 'Удалить',
     },
-    
+
     // 404
     notFound: {
       title: '404',
@@ -91,20 +91,20 @@ export default {
 
     // Уведомления
     toast: {
-      
-    // Ошибки
+
+      // Ошибки
       networkError: 'Ошибка сети',
       loadError: 'Ошибка загрузки данных',
-      
-    // Каналы
+
+      // Каналы
       channelCreated: 'Канал создан',
       channelRenamed: 'Канал переименован',
       channelRemoved: 'Канал удалён',
-      
-    // Ошибки каналов
+
+      // Ошибки каналов
       channelCreateError: 'Не удалось создать канал',
       channelRenameError: 'Не удалось переименовать канал',
       channelRemoveError: 'Не удалось удалить канал',
     },
-  }
+  },
 }

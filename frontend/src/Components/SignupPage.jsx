@@ -6,7 +6,6 @@ import * as yup from 'yup'
 import Navbar from './Navbar'
 import { signup } from '../services/api'
 
-
 const SignupPage = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -39,19 +38,22 @@ const SignupPage = () => {
       try {
         setUserExistsError(false)
         const response = await signup(values.username, values.password)
-        
+
         if (response.token) {
           localStorage.setItem('token', response.token)
           localStorage.setItem('username', response.username)
           navigate('/chat')
         }
-      } catch (error) {
+      }
+      catch (error) {
         if (error.response?.status === 409) {
           setUserExistsError(true)
-        } else {
+        }
+        else {
           alert(t('login.errors.invalid'))
         }
-      } finally {
+      }
+      finally {
         setSubmitting(false)
       }
     },
@@ -75,7 +77,7 @@ const SignupPage = () => {
               <div className="card-body p-5">
                 <form onSubmit={formik.handleSubmit}>
                   <h1 className="text-center mb-4">{t('signup.title')}</h1>
-                  
+
                   <div className="form-floating mb-3">
                     <input
                       id="username"
@@ -142,9 +144,12 @@ const SignupPage = () => {
                   >
                     {formik.isSubmitting ? t('loading') : t('signup.submit')}
                   </button>
-                  
+
                   <div className="text-center mt-3">
-                    <span>{t('signup.haveAccount')} </span>
+                    <span>
+                      {t('signup.haveAccount')}
+                      {' '}
+                    </span>
                     <a href="/login">{t('signup.login')}</a>
                   </div>
                 </form>

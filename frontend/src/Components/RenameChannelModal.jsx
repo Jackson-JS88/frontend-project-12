@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { cleanText } from '../utils/profanityFilter'
 import Modal from './Modal'
 
-
 const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChannels }) => {
   const { t } = useTranslation()
   const inputRef = useRef(null)
@@ -19,7 +18,7 @@ const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChanne
       .test('unique', t('channel.errors.unique'), (value) => {
         const cleanedValue = cleanText(value)
         return !existingChannels.some(
-          (ch) => ch.id !== channel?.id && ch.name.toLowerCase() === cleanedValue?.toLowerCase()
+          ch => ch.id !== channel?.id && ch.name.toLowerCase() === cleanedValue?.toLowerCase(),
         )
       }),
   })

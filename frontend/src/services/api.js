@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 const api = axios.create({
   baseURL: '/api/v1',
 })
@@ -49,6 +48,5 @@ export const removeChannel = async (id) => {
   const response = await api.delete(`/channels/${id}`)
   return response.data
 }
-
 
 export default api

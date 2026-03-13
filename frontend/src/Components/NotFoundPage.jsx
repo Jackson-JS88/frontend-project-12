@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
 
-
 const NotFoundPage = () => {
   const { t } = useTranslation()
 

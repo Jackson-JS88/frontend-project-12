@@ -4,7 +4,6 @@ import socketService from '../sockets'
 import { addMessage } from '../store/messagesSlice'
 import { cleanText } from '../utils/profanityFilter'
 
-
 export const useSocket = () => {
   const dispatch = useDispatch()
 
@@ -14,7 +13,7 @@ export const useSocket = () => {
     const handleNewMessage = (message) => {
       const filteredMessage = {
         ...message,
-        text: cleanText(message.text)
+        text: cleanText(message.text),
       }
       dispatch(addMessage(filteredMessage))
     }

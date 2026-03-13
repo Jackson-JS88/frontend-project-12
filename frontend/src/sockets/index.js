@@ -1,6 +1,5 @@
 import { io } from 'socket.io-client'
 
-
 class SocketService {
   constructor() {
     this.socket = null
@@ -13,9 +12,9 @@ class SocketService {
     }
 
     const token = localStorage.getItem('token')
-    
+
     const isProduction = import.meta.env.PROD
-    const url = isProduction 
+    const url = isProduction
       ? window.location.origin
       : 'http://localhost:5001'
 

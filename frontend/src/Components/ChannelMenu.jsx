@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-
 const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
   const { t } = useTranslation()
   const [showMenu, setShowMenu] = useState(false)
@@ -56,7 +55,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
           borderBottomLeftRadius: '0',
           borderTopRightRadius: '0.375rem',
           borderBottomRightRadius: '0.375rem',
-          marginLeft: '0'
+          marginLeft: '0',
         }}
         onClick={handleToggleMenu}
       >
@@ -73,7 +72,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
             zIndex: 1060,
             minWidth: '150px',
           }}
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           {isRemovable && (
             <a

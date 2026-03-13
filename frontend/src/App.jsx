@@ -9,7 +9,6 @@ import ChatPage from './Components/ChatPage'
 import NotFoundPage from './Components/NotFoundPage'
 import PrivateRoute from './Components/PrivateRoute'
 
-
 const rollbarConfig = {
   accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
   environment: import.meta.env.MODE || 'development',
@@ -34,19 +33,19 @@ function App() {
         <BrowserRouter>
           <ToastContainer />
           <Routes>
-            <Route 
-              path="/" 
-              element={token ? <Navigate to="/chat" /> : <Navigate to="/login" />} 
+            <Route
+              path="/"
+              element={token ? <Navigate to="/chat" /> : <Navigate to="/login" />}
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
-            <Route 
-              path="/chat" 
-              element={
+            <Route
+              path="/chat"
+              element={(
                 <PrivateRoute>
                   <ChatPage />
                 </PrivateRoute>
-              } 
+              )}
             />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

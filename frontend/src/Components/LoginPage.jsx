@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
 import { login } from '../services/api'
 
-
 const LoginPage = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -19,13 +18,14 @@ const LoginPage = () => {
     onSubmit: async (values) => {
       try {
         const response = await login(values.username, values.password)
-        
+
         if (response.token) {
           localStorage.setItem('token', response.token)
           localStorage.setItem('username', response.username)
           navigate('/chat')
         }
-      } catch {
+      }
+      catch {
         setAuthError(true)
       }
     },
@@ -41,7 +41,7 @@ const LoginPage = () => {
               <div className="card-body p-5">
                 <form onSubmit={formik.handleSubmit}>
                   <h1 className="text-center mb-4">{t('login.title')}</h1>
-                  
+
                   <div className="form-floating mb-3">
                     <input
                       id="username"
@@ -87,10 +87,13 @@ const LoginPage = () => {
                   </button>
                 </form>
               </div>
-              
+
               <div className="card-footer p-4">
                 <div className="text-center">
-                  <span>{t('login.noAccount')} </span>
+                  <span>
+                    {t('login.noAccount')}
+                    {' '}
+                  </span>
                   <a href="/signup">{t('login.signup')}</a>
                 </div>
               </div>
