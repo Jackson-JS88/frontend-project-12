@@ -27,7 +27,7 @@ const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChanne
       formik.setValues({ name: channel.name })
       setTimeout(() => inputRef.current?.focus(), 100)
     }
-  }, [isOpen, channel, formik])
+  }, [isOpen, channel])
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !formik.isSubmitting) {

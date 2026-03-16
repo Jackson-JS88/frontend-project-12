@@ -27,7 +27,7 @@ const AddChannelModal = ({ isOpen, onClose, onAdd, existingChannels }) => {
       setTimeout(() => inputRef.current?.focus(), 100)
       formik.resetForm()
     }
-  }, [isOpen, formik])
+  }, [isOpen])
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !formik.isSubmitting) {
