@@ -1,31 +1,26 @@
 import { useState } from 'react'
 import { useFormik } from 'formik'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
-import { login } from '../services/api'
+import { useAuth } from '../hooks/useAuth'
+import { getLoginSchema } from '../utils/validationSchemas'
 
 const LoginPage = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { login } = useAuth()
   const [authError, setAuthError] = useState(false)
+
+  const validationSchema = getLoginSchema(t)
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
+    validationSchema,
     onSubmit: async (values) => {
-      try {
-        const response = await login(values.username, values.password)
-
-        if (response.token) {
-          localStorage.setItem('token', response.token)
-          localStorage.setItem('username', response.username)
-          navigate('/chat')
-        }
-      }
-      catch {
+      const result = await login(values.username, values.password)
+      if (!result.success) {
         setAuthError(true)
       }
     },

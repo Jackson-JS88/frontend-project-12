@@ -1,27 +1,15 @@
 import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
-import * as yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { cleanText } from '../utils/profanityFilter'
+import { getChannelSchema } from '../utils/validationSchemas'
 import Modal from './Modal'
 
 const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChannels }) => {
   const { t } = useTranslation()
   const inputRef = useRef(null)
 
-  const validationSchema = yup.object({
-    name: yup
-      .string()
-      .min(3, t('channel.errors.length'))
-      .max(20, t('channel.errors.length'))
-      .required(t('channel.errors.required'))
-      .test('unique', t('channel.errors.unique'), (value) => {
-        const cleanedValue = cleanText(value)
-        return !existingChannels.some(
-          ch => ch.id !== channel?.id && ch.name.toLowerCase() === cleanedValue?.toLowerCase(),
-        )
-      }),
-  })
+  const validationSchema = getChannelSchema(t, existingChannels, channel?.id)
 
   const formik = useFormik({
     initialValues: { name: channel?.name || '' },
@@ -39,7 +27,7 @@ const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChanne
       formik.setValues({ name: channel.name })
       setTimeout(() => inputRef.current?.focus(), 100)
     }
-  }, [isOpen, channel])
+  }, [isOpen, channel, formik])
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !formik.isSubmitting) {

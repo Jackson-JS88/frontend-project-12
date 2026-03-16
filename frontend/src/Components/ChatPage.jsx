@@ -10,6 +10,7 @@ import {
 } from '../store/channelsSlice'
 import { setMessages, addMessage, updateMessageStatus, removeTempMessage, setLoading as setMessagesLoading, setError as setMessagesError } from '../store/messagesSlice'
 import { useSocket } from '../hooks/useSocket'
+import { useAuth } from '../hooks/useAuth'
 import { cleanText } from '../utils/profanityFilter'
 import Navbar from './Navbar'
 import ChannelMenu from './ChannelMenu'
@@ -30,6 +31,7 @@ const ChatPage = () => {
 
   const { channels, currentChannelId, loading: channelsLoading } = useSelector(state => state.channels)
   const { messages, loading: messagesLoading, sendingStatus } = useSelector(state => state.messages)
+  const { username: currentUsername } = useAuth()
 
   useSocket()
 
@@ -99,12 +101,10 @@ const ChatPage = () => {
     const messageText = cleanText(rawText)
     setNewMessageText('')
 
-    const currentUsername = localStorage.getItem('username') || 'Вы'
-
     const tempMessage = {
       tempId,
       text: messageText,
-      username: currentUsername,
+      username: currentUsername || 'Вы',
       channelId: currentChannelId,
       sending: true,
     }
@@ -113,7 +113,7 @@ const ChatPage = () => {
     dispatch(updateMessageStatus({ tempId, status: 'sending' }))
 
     try {
-      await sendMessageHttp(currentChannelId, messageText, currentUsername)
+      await sendMessageHttp(currentChannelId, messageText, currentUsername || 'Вы')
       dispatch(updateMessageStatus({ tempId, status: 'sent' }))
     }
     catch {
@@ -217,7 +217,6 @@ const ChatPage = () => {
 
   const currentChannel = channels.find(c => String(c.id) === String(currentChannelId))
   const channelMessages = messages.filter(m => String(m.channelId) === String(currentChannelId))
-  const currentUsername = localStorage.getItem('username')
 
   return (
     <div className="d-flex flex-column h-100">

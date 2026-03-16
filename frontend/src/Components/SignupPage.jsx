@@ -1,31 +1,16 @@
 import { useState } from 'react'
 import { useFormik } from 'formik'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import * as yup from 'yup'
 import Navbar from './Navbar'
-import { signup } from '../services/api'
+import { useAuth } from '../hooks/useAuth'
+import { getSignupSchema } from '../utils/validationSchemas'
 
 const SignupPage = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { signup } = useAuth()
   const [userExistsError, setUserExistsError] = useState(false)
 
-  const validationSchema = yup.object({
-    username: yup
-      .string()
-      .min(3, t('signup.errors.usernameLength'))
-      .max(20, t('signup.errors.usernameLength'))
-      .required(t('channel.errors.required')),
-    password: yup
-      .string()
-      .min(6, t('signup.errors.passwordLength'))
-      .required(t('channel.errors.required')),
-    confirmPassword: yup
-      .string()
-      .oneOf([yup.ref('password'), null], t('signup.errors.passwordMatch'))
-      .required(t('channel.errors.required')),
-  })
+  const validationSchema = getSignupSchema(t)
 
   const formik = useFormik({
     initialValues: {
@@ -35,27 +20,17 @@ const SignupPage = () => {
     },
     validationSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      try {
-        setUserExistsError(false)
-        const response = await signup(values.username, values.password)
-
-        if (response.token) {
-          localStorage.setItem('token', response.token)
-          localStorage.setItem('username', response.username)
-          navigate('/chat')
-        }
-      }
-      catch (error) {
-        if (error.response?.status === 409) {
+      setUserExistsError(false)
+      const result = await signup(values.username, values.password)
+      if (!result.success) {
+        if (result.error?.response?.status === 409) {
           setUserExistsError(true)
         }
         else {
           alert(t('login.errors.invalid'))
         }
       }
-      finally {
-        setSubmitting(false)
-      }
+      setSubmitting(false)
     },
   })
 

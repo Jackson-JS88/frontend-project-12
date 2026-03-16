@@ -8,6 +8,7 @@ import SignupPage from './Components/SignupPage'
 import ChatPage from './Components/ChatPage'
 import NotFoundPage from './Components/NotFoundPage'
 import PrivateRoute from './Components/PrivateRoute'
+import { useAuth } from './hooks/useAuth'
 
 const rollbarConfig = {
   accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
@@ -24,31 +25,37 @@ const FallbackUI = () => (
   </div>
 )
 
-function App() {
-  const token = localStorage.getItem('token')
+const AppRoutes = () => {
+  const { isAuthenticated } = useAuth()
 
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={isAuthenticated ? <Navigate to="/chat" /> : <Navigate to="/login" />}
+      />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route
+        path="/chat"
+        element={(
+          <PrivateRoute>
+            <ChatPage />
+          </PrivateRoute>
+        )}
+      />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
+  )
+}
+
+function App() {
   return (
     <Provider config={rollbarConfig}>
       <ErrorBoundary fallbackUI={FallbackUI}>
         <BrowserRouter>
           <ToastContainer />
-          <Routes>
-            <Route
-              path="/"
-              element={token ? <Navigate to="/chat" /> : <Navigate to="/login" />}
-            />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route
-              path="/chat"
-              element={(
-                <PrivateRoute>
-                  <ChatPage />
-                </PrivateRoute>
-              )}
-            />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </ErrorBoundary>
     </Provider>

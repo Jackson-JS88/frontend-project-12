@@ -1,18 +1,16 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../hooks/useAuth'
 
 const Navbar = () => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const location = useLocation()
+  const { isAuthenticated, logout } = useAuth()
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('username')
-    navigate('/login')
+    logout()
   }
 
-  const isAuthenticated = !!localStorage.getItem('token')
   const showLogoutButton = isAuthenticated && location.pathname === '/chat'
 
   return (
