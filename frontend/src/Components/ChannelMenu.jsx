@@ -7,6 +7,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
   const menuRef = useRef(null)
 
   const isRemovable = channel.removable !== false
+  const isSystemChannel = channel.name === 'general' || channel.name === 'random'
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -41,6 +42,10 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
     onRemove()
   }
 
+  if (isSystemChannel) {
+    return null
+  }
+
   return (
     <div ref={menuRef} style={{ display: 'inline-block' }}>
       <button
@@ -59,7 +64,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
         }}
         onClick={handleToggleMenu}
       >
-        <span className="visually-hidden">Управление каналом</span>
+        <span className="visually-hidden">{t('channel.management')}</span>
       </button>
 
       {showMenu && (
@@ -75,10 +80,9 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
           onClick={e => e.stopPropagation()}
         >
           {isRemovable && (
-            <a
+            <button
               className="dropdown-item"
-              role="button"
-              tabIndex="0"
+              type="button"
               onClick={handleRemoveClick}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -87,12 +91,11 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
               }}
             >
               {t('menu.remove')}
-            </a>
+            </button>
           )}
-          <a
+          <button
             className="dropdown-item"
-            role="button"
-            tabIndex="0"
+            type="button"
             onClick={handleRenameClick}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -101,7 +104,7 @@ const ChannelMenu = ({ channel, onRename, onRemove, isActive }) => {
             }}
           >
             {t('menu.rename')}
-          </a>
+          </button>
         </div>
       )}
 

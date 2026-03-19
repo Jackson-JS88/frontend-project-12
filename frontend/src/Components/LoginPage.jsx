@@ -47,7 +47,7 @@ const LoginPage = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
-                      autoComplete="username"
+                      autoComplete="off"
                       required
                     />
                     <label htmlFor="username">{t('login.username')}</label>
@@ -63,7 +63,7 @@ const LoginPage = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
-                      autoComplete="current-password"
+                      autoComplete="off"
                       required
                     />
                     <label htmlFor="password">{t('login.password')}</label>

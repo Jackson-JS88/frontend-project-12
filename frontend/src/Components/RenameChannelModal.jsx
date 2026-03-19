@@ -54,6 +54,7 @@ const RenameChannelModal = ({ isOpen, onClose, onRename, channel, existingChanne
             onKeyDown={handleKeyDown}
             value={formik.values.name}
             disabled={formik.isSubmitting}
+            autoComplete="off"
           />
           {formik.touched.name && formik.errors.name && (
             <div className="invalid-feedback">{formik.errors.name}</div>

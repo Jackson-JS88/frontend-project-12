@@ -64,6 +64,7 @@ const SignupPage = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
                       disabled={formik.isSubmitting}
+                      autoComplete="off"
                     />
                     <label htmlFor="username">{t('signup.username')}</label>
                     {formik.touched.username && formik.errors.username && (
@@ -82,6 +83,7 @@ const SignupPage = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.password}
                       disabled={formik.isSubmitting}
+                      autoComplete="off"
                     />
                     <label htmlFor="password">{t('signup.password')}</label>
                     {formik.touched.password && formik.errors.password && (
@@ -100,6 +102,7 @@ const SignupPage = () => {
                       onBlur={formik.handleBlur}
                       value={formik.values.confirmPassword}
                       disabled={formik.isSubmitting}
+                      autoComplete="off"
                     />
                     <label htmlFor="confirmPassword">{t('signup.confirmPassword')}</label>
                     {formik.touched.confirmPassword && formik.errors.confirmPassword && (
