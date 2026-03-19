@@ -35,10 +35,6 @@ const ChatPage = () => {
 
   useSocket()
 
-  const isSystemChannel = (channel) => {
-    return channel.name === 'general' || channel.name === 'random'
-  }
-
   const getMessagesCount = (count) => {
     return t('messages.count', { count })
   }
@@ -267,7 +263,6 @@ const ChatPage = () => {
               <div>
                 {channels.map((channel) => {
                   const isActive = String(channel.id) === String(currentChannelId)
-                  const systemChannel = isSystemChannel(channel)
 
                   return (
                     <div
@@ -283,8 +278,9 @@ const ChatPage = () => {
                         style={{
                           borderTopLeftRadius: '0.375rem',
                           borderBottomLeftRadius: '0.375rem',
-                          borderTopRightRadius: systemChannel ? '0.375rem' : '0',
-                          borderBottomRightRadius: systemChannel ? '0.375rem' : '0',
+                          borderTopRightRadius: '0',
+                          borderBottomRightRadius: '0',
+                          marginRight: '0',
                         }}
                         onClick={() => dispatch(setCurrentChannel(String(channel.id)))}
                       >
@@ -292,14 +288,12 @@ const ChatPage = () => {
                         {channel.name}
                       </button>
 
-                      {!systemChannel && (
-                        <ChannelMenu
-                          channel={channel}
-                          onRename={() => openRenameModal(channel)}
-                          onRemove={() => openRemoveModal(channel)}
-                          isActive={isActive}
-                        />
-                      )}
+                      <ChannelMenu
+                        channel={channel}
+                        onRename={() => openRenameModal(channel)}
+                        onRemove={() => openRemoveModal(channel)}
+                        isActive={isActive}
+                      />
                     </div>
                   )
                 })}
