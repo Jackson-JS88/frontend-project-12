@@ -278,8 +278,8 @@ const ChatPage = () => {
                         style={{
                           borderTopLeftRadius: '0.375rem',
                           borderBottomLeftRadius: '0.375rem',
-                          borderTopRightRadius: '0',
-                          borderBottomRightRadius: '0',
+                          borderTopRightRadius: channel.removable ? '0' : '0.375rem',
+                          borderBottomRightRadius: channel.removable ? '0' : '0.375rem',
                           marginRight: '0',
                         }}
                         onClick={() => dispatch(setCurrentChannel(String(channel.id)))}
@@ -288,12 +288,14 @@ const ChatPage = () => {
                         {channel.name}
                       </button>
 
-                      <ChannelMenu
-                        channel={channel}
-                        onRename={() => openRenameModal(channel)}
-                        onRemove={() => openRemoveModal(channel)}
-                        isActive={isActive}
-                      />
+                      {channel.removable && (
+                        <ChannelMenu
+                          channel={channel}
+                          onRename={() => openRenameModal(channel)}
+                          onRemove={() => openRemoveModal(channel)}
+                          isActive={isActive}
+                        />
+                      )}
                     </div>
                   )
                 })}
